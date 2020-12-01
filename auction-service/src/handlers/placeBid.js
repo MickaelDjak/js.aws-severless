@@ -1,9 +1,12 @@
 import AWS from 'aws-sdk';
 import createError from 'http-errors';
-import commonMW from './../lib/commonMidleware';
-import config from './../config';
-import {getAuctionById} from './getAuction'
+import validator from '@middy/validator';
 
+import commonMW from './../lib/commonMidleware';
+import auctionStatus from './../lib/auctionStatus';
+import config from './../config';
+import {getAuctionById} from './getAuction';
+import schema from './../lib/schemas/placeBidSchema'
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -14,6 +17,10 @@ async function placeBid(event, context) {
     let auction = await getAuctionById(id);
     if (Number(auction.Item.highestBit.amount) >= Number(amount)) {
         throw new createError.Forbidden("You can't make highest bit less or equal than current price");
+    }
+
+    if ( auction.Item.status === auctionStatus.CLOSE) {
+        throw new createError.Forbidden("You can't bit closed auction");
     }
 
     let result;
@@ -38,6 +45,6 @@ async function placeBid(event, context) {
     };
 }
 
-export const handler = commonMW(placeBid);
+export const handler = commonMW(placeBid).use(validator({inputSchema: schema}));
 
 

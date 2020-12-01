@@ -1,6 +1,7 @@
 import AWS from 'aws-sdk';
 import commonMW from './../lib/commonMidleware';
 import createError from 'http-errors';
+import config from './../config';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -8,7 +9,7 @@ export async function getAuctionById(id) {
     let auction;
     try {
         auction = await dynamodb.get({
-            TableName: process.env.AUCTION_TABLE_NAME,
+            TableName: config.AUCTION_TABLE_NAME,
             Key: {id},
         }).promise();
     } catch (e) {

@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import config from "../config";
+import auctionStatus from './auctionStatus';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -10,7 +11,7 @@ async function getEndedAuction() {
         IndexName: config.AUCTION_TABLE_NAME_INDEX,
         KeyConditionExpression: '#status = :status AND endingAt <= :now',
         ExpressionAttributeValues: {
-            ':status': "OPEN",
+            ':status': auctionStatus.OPEN,
             ':now': now.toISOString()
         },
         ExpressionAttributeNames: {

@@ -1,5 +1,6 @@
 import AWS from 'aws-sdk';
 import config from "../config";
+import auctionStatus from './auctionStatus';
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
 
@@ -9,7 +10,7 @@ async function closeAuctions(auction) {
         Key: {id:auction.id },
         UpdateExpression: "SET #status = :status",
         ExpressionAttributeValues: {
-            ':status': "CLOSED"
+            ':status': auctionStatus.CLOSE
         },
         ExpressionAttributeNames: {
             '#status': 'status'

@@ -16,11 +16,11 @@ provider:
     AUCTION_TABLE_NAME: ${self:custom.AuctionsTable.name}
     AUCTION_TABLE_NAME_INDEX: ${self:custom.AuctionsTable.index}
   iamRoleStatements:
-    - ${file(iam/AuctionsTableAIM.yml):AuctionsTableAIM}
+    - ${file(aws/iam/AuctionsTableAIM.yml):AuctionsTableAIM}
 
 resources:
   Resources:
-    AuctionsTable: ${file(resources/AuctionsTable.yml):AuctionsTable}
+    AuctionsTable: ${file(aws/resources/AuctionsTable.yml):AuctionsTable}
 
 functions:
   createAuction:
