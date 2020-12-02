@@ -1,0 +1,4 @@
+export default {
+    AUCTION_TABLE_NAME: process.env.AUCTION_TABLE_NAME,
+    AUCTION_TABLE_NAME_INDEX: process.env.AUCTION_TABLE_NAME_INDEX
+};
